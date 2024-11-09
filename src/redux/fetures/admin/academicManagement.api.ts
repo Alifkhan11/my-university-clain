@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TAcademicDepartment, TAcademicSemester } from "../../../types/academicManagement.type";
+import { TAcademicDepartment, TAcademicFaculty, TAcademicSemester } from "../../../types/academicManagement.type";
 import {  TQueryParams, TResponseRedux } from "../../../types/global";
 import { baseApi } from "../../api/baseApi";
 
@@ -48,8 +48,23 @@ const academicManagementApi=baseApi.injectEndpoints({
                 method:'GET',
                 }
             },
-            transformResponse:(response:TResponseRedux<TAcademicDepartment>)=>{
+            transformResponse:(response:TResponseRedux<TAcademicDepartment[]>)=>{
                 return {
+                    data:response.data,
+                    meta:response.meta
+                }
+            }
+        }),
+
+        getAcademicFaculties:builder.query({
+            query:()=>{
+                return{
+                    url:`/academic-faculty`,
+                    method:'GET'
+                }
+            },
+            transformResponse:(response:TResponseRedux<TAcademicFaculty[]>)=>{
+                return{
                     data:response.data,
                     meta:response.meta
                 }
@@ -67,5 +82,6 @@ export const {
     useGetAllSemesterQuery,
     useAddAcademicSemesterMutation,
     useAddAcademicDepartmentMutation,
-    useGetAcademicDepartmentQuery
+    useGetAcademicDepartmentQuery,
+    useGetAcademicFacultiesQuery
 }=academicManagementApi

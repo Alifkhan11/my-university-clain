@@ -8,6 +8,7 @@ export const routeGenerator=(Items:TUserPath[])=>{
                 path:item.path,
                 element:item.element
             })
+           console.log(acc);
            
         }
         if(item.children){

@@ -4,10 +4,11 @@ import PhForm from "../../../components/form/PhForm";
 import PhInput from "../../../components/form/PhInput";
 import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PHSelect from "../../../components/form/PhSelect";
-import { bloodGroupOption, genderOption } from "../../../constants/global";
 import PhDatePicker from "../../../components/form/PhDatePicker";
 import {  useGetAcademicDepartmentQuery, useGetAllSemesterQuery } from "../../../redux/fetures/admin/academicManagement.api";
 import { useAddStudentMutation } from "../../../redux/fetures/admin/userManagementApi";
+import { TAcademicDepartment } from "../../../types";
+import { bloodGroupOptions, genderOptions } from "../../../constants/global";
 
 
 
@@ -54,9 +55,7 @@ const CreateStudent = () => {
   const [addStudent,{data,error}]=useAddStudentMutation()
   const {data:sData,isLoading:sIsLoading}=useGetAllSemesterQuery(undefined)
   const {data:dData,isLoading:dIsLoading}=useGetAcademicDepartmentQuery(undefined)
-  const dddd:any=dData?.data
-  // eslint-disable-next-line no-unsafe-optional-chaining
-  const departmentOptions = dddd?.map((item:any) => ({
+  const departmentOptions = dData?.data?.map((item:TAcademicDepartment) => ({
     value: item._id,
     label: item.name,
   }));
@@ -104,14 +103,14 @@ console.log(`data"`,data,'  ',`error:`,error,);
               <PhInput type="text" name="name.lestName" label="Last Name" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHSelect options={genderOption} name="gender" label="Gender" />
+              <PHSelect options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               {/* <PhInput type="text" name="dateOfBirth" label="Date of Birth" /> */}
               <PhDatePicker name="dathOfBirth" label="Date Of Birth" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHSelect options={bloodGroupOption} name="bloodGroup" label="Blood Group" />
+              <PHSelect options={bloodGroupOptions} name="bloodGroup" label="Blood Group" />
             </Col>
           </Row>
 

@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Layout, Menu } from "antd";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { adminPaths } from "../../router/admin.router";
 import { facultyPaths } from "../../router/faculty.routes";
 import { studentPaths } from "../../router/student.router";
 import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from "../../redux/fetures/auth/authSlice";
+import {  useCurrentToken } from "../../redux/fetures/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
 const { Sider } = Layout;
 
 
@@ -12,12 +14,16 @@ const userRole = {
     ADMIN: 'admin',
     FACULTY: 'faculty',
     STUDENT: 'student',
+    SUPERADMIN: 'superAdmin',
 };
 
 const SideBar = () => {
 
-
-    const user=useAppSelector(selectCurrentUser)
+    const token = useAppSelector(useCurrentToken)
+    let user:any;
+    if(token){
+        user=verifyToken(token)
+    }
     const role = user?.role
     let sidebarItems
 
@@ -30,6 +36,9 @@ const SideBar = () => {
             break
         case userRole.STUDENT:
             sidebarItems = sidebarItemsGenerator(studentPaths, userRole.STUDENT)
+            break
+        case userRole.SUPERADMIN:
+            sidebarItems = sidebarItemsGenerator(adminPaths, userRole.SUPERADMIN)
             break
         default:
             break;

@@ -3,7 +3,7 @@ import ProtectRouter from "./components/layout/ProtectRouter"
 
 function App() {
   return (
-    <ProtectRouter>
+    <ProtectRouter role={undefined}>
       <MainLayout />
     </ProtectRouter>
   )

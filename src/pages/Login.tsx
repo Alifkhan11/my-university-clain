@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Row } from "antd";
 import { useLoginMutation } from "../redux/fetures/auth/authApi";
 import { useAppDispatch } from "../redux/hooks";
@@ -21,6 +22,8 @@ const Login = () => {
     console.log(error);
 
     const onsubmit = async (data: any) => {
+        console.log(data);
+        
         const toadtId = toast.loading('Loggiog in')
         try {
             const userInfo = {
@@ -28,11 +31,19 @@ const Login = () => {
                 password: data.password
             }
             const res = await Login(userInfo).unwrap()
+            console.log(res);
+            
             const user = verifyToken(res.data.accessToken) as TUser
             dispatch(setUser({ user, token: res.data.accessToken }))
             toast.success('Logging in Successfully', { id: toadtId, duration: 2000 })
             const role = user.role
-            navigate(`/${role}/dasbord`)
+
+            if(res.data.needsPasswordChange){
+                navigate(`/change-password`)
+            }else{
+                navigate(`/${role}/dasbord`)
+            }
+
         } catch {
             toast.error('Something is wrong', { id: toadtId, duration: 2000 })
         }
